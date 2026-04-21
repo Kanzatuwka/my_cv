@@ -3,38 +3,140 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Github, 
   Linkedin, 
   Mail, 
-  Phone, 
   MapPin, 
-  ExternalLink, 
   Code, 
   Smartphone, 
   CheckCircle, 
   Globe, 
-  Cpu,
-  GraduationCap,
-  Briefcase,
-  Languages,
-  QrCode,
-  Download
+  QrCode
 } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 
-// Data definitions
+type Language = 'de' | 'en';
+
+const TRANSLATIONS = {
+  de: {
+    nav: {
+      experience: "Erfahrung",
+      skills: "Skills",
+      share: "Share"
+    },
+    profile: {
+      title: "Flutter App Entwickler",
+      location: "Berlin, Deutschland",
+      description: "Erfahrener IT-Spezialist mit über 3 Jahren Erfahrung im Mobile Testing, der sich nun konsequent auf die Softwareentwicklung spezialisiert hat. Mein beruflicher Fokus liegt aktuell ausschließlich auf der Entwicklung von performanten und skalierbaren Cross-Plattform-Applikationen mit Flutter unter Einsatz moderner KI-gestützter Entwicklungsprozesse.",
+      status: "Verfügbar ab sofort"
+    },
+    sections: {
+      intro: "Profil & Ziele",
+      qualification: "Aktuelle Qualifikation",
+      techProfile: "Technisches Profil",
+      experience: "Berufserfahrung",
+      education: "Akademie Ausbildung"
+    },
+    contact: "Kontakt",
+    languages: "Sprachkenntnisse",
+    scan: {
+      title: "Portfolio scannen",
+      modalTitle: "Digitales Profil",
+      modalDesc: "Scannen Sie diesen Code, um mein Profil mobil zu öffnen.",
+      close: "Schließen"
+    },
+    footer: "Digitale Version verfügbar auf {url} • Aktualisiert: April 2026",
+    exp_details: {
+      momenta: "Prüfung und Validierung hardware- und softwarebasierter Autopilot-Systeme für die Automobilindustrie.",
+      bts: "Unterstützung und Wartung von automatisierten Bankensystemen.",
+      ts_field_items: [
+        "Leitung von Smartphone- und Smart-Vehicle-Testprojekten in mehreren Ländern.",
+        "Organisation von Schulungen für angehende Field Test Engineers.",
+        "Aufbau und Training eines Test-Teams in Thailand."
+      ],
+      ts_eng_items: [
+        "Durchführung von Netzwerktests (VoLTE/ViLTE/VoWIFI, 5G transition tests).",
+        "Fehleranalyse mit Tools wie QXDM, QPST, Wireshark und ADB.",
+        "Dokumentation und Registrierung von Bug-Reports in Tracking-Systemen."
+      ]
+    },
+    qual_items: [
+      "Softwareentwicklung mit KI-Basis & Tools",
+      "Integration von GitHub Copilot & ChatGPT in den Workflow",
+      "State Management & Clean Architecture (AI-optimiert)",
+      "Mobile Development mit Flutter & AI-Unterstützung"
+    ],
+    skill_headers: {
+      core: "Programmierung",
+      mobile: "Mobile & Hardware",
+      soft: "Expertise & Soft Skills"
+    }
+  },
+  en: {
+    nav: {
+      experience: "Experience",
+      skills: "Skills",
+      share: "Share"
+    },
+    profile: {
+      title: "Flutter App Developer",
+      location: "Berlin, Germany",
+      description: "Experienced IT specialist with over 3 years in mobile testing, now consistently specializing in software development. My professional focus is currently exclusively on developing performant and scalable cross-platform applications with Flutter using modern AI-supported development processes.",
+      status: "Available immediately"
+    },
+    sections: {
+      intro: "Profile & Goals",
+      qualification: "Current Qualification",
+      techProfile: "Technical Profile",
+      experience: "Work Experience",
+      education: "Academic Education"
+    },
+    contact: "Contact",
+    languages: "Language Skills",
+    scan: {
+      title: "Scan Portfolio",
+      modalTitle: "Digital Profile",
+      modalDesc: "Scan this code to open my profile on your mobile device.",
+      close: "Close"
+    },
+    footer: "Digital version available at {url} • Updated: April 2026",
+    exp_details: {
+      momenta: "Testing and validation of hardware and software-based autopilot systems for the automotive industry.",
+      bts: "Support and maintenance of automated banking systems.",
+      ts_field_items: [
+        "Lead smartphone and smart vehicle field testing projects in multiple countries.",
+        "Organization of training sessions for junior field test engineers.",
+        "Recruitment and training of a field testing team in Thailand."
+      ],
+      ts_eng_items: [
+        "Network testing (VoLTE/ViLTE/VoWIFI, 5G transition tests).",
+        "Error analysis using tools like QXDM, QPST, Wireshark, and ADB.",
+        "Preparation of bug reports and registration in bug tracking systems."
+      ]
+    },
+    qual_items: [
+      "Software development with AI base & tools",
+      "Integration of GitHub Copilot & ChatGPT into the workflow",
+      "State Management & Clean Architecture (AI-optimized)",
+      "Mobile development with Flutter & AI support"
+    ],
+    skill_headers: {
+      core: "Programming",
+      mobile: "Mobile & Hardware",
+      soft: "Expertise & Soft Skills"
+    }
+  }
+};
+
 const PROFILE = {
   name: "Oleksandr Prykhodko",
-  title: "Flutter App Entwickler",
-  location: "Berlin, Deutschland",
   phone: "+49 17647088838",
   email: "olexandr.prykhodko@gmail.com",
   github: "https://github.com/Kanzatuwka",
   linkedin: "https://www.linkedin.com/in/oleksandr-prykhodko-542158143",
-  description: "Erfahrener IT-Spezialist mit über 3 Jahren Erfahrung im Mobile Testing, der sich nun konsequent auf die Softwareentwicklung spezialisiert hat. Mein beruflicher Fokus liegt aktuell ausschließlich auf der Entwicklung von performanten und skalierbaren Cross-Plattform-Applikationen mit Flutter unter Einsatz moderner KI-gestützter Entwicklungsprozesse.",
 };
 
 const SKILLS = {
@@ -43,75 +145,87 @@ const SKILLS = {
   soft: ["Problemlösung", "Teamleitung", "Interkulturelle Kommunikation", "Analytisches Denken"]
 };
 
-const EXPERIENCE = [
+// Data with mixed structure for mapping
+const EXPERIENCE_BASE = [
   {
-    role: "Techniker im Testing",
     company: "Momenta",
-    location: "Deutschland",
+    location: "Germany",
     period: "2023",
-    description: "Prüfung und Validierung hardware- und softwarebasierter Autopilot-Systeme für die Automobilindustrie."
+    key: "momenta"
   },
   {
-    role: "Teamleiter / Field Test Engineer",
     company: "Thundersoft",
-    location: "Schweden, Thailand, VAE, Griechenland, Italien, Frankreich",
+    location: "Sweden, Thailand, UAE, Greece, Italy, France",
     period: "2021 - 2023",
-    items: [
-      "Leitung von Smartphone- und Smart-Vehicle-Testprojekten in mehreren Ländern.",
-      "Organisation von Schulungen für angehende Field Test Engineers.",
-      "Aufbau und Training eines Test-Teams in Thailand."
-    ]
+    role_de: "Teamleiter / Field Test Engineer",
+    role_en: "Team Lead / Field Test Engineer",
+    item_key: "ts_field_items"
   },
   {
-    role: "Field Test Engineer",
     company: "Thundersoft",
-    location: "Ukraine, Rumänien, Schweden, Thailand, VAE, Italien, Belarus",
+    location: "Ukraine, Romania, Sweden, Thailand, UAE, Italy, Belarus",
     period: "2020 - 2021",
-    items: [
-      "Durchführung von Netzwerktests (VoLTE/ViLTE/VoWIFI, 5G transition tests).",
-      "Fehleranalyse mit Tools wie QXDM, QPST, Wireshark und ADB.",
-      "Dokumentation und Registrierung von Bug-Reports in Tracking-Systemen."
-    ]
+    role_de: "Field Test Engineer",
+    role_en: "Field Test Engineer",
+    item_key: "ts_eng_items"
   },
   {
-    role: "Chief Specialist (Automated Banking Systems)",
     company: "PJSC BTA BANK",
     location: "Ukraine",
     period: "2011 - 2015",
-    description: "Unterstützung und Wartung von automatisierten Bankensystemen."
+    role_de: "Chief Specialist (Automated Banking Systems)",
+    role_en: "Chief Specialist (Automated Banking Systems)",
+    key: "bts"
   }
 ];
 
-const EDUCATION = [
+const EDUCATION_BASE = [
   {
-    degree: "AI Software Developer (Flutter Fokus)",
+    degree_de: "AI Software Developer (Flutter Fokus)",
+    degree_en: "AI Software Developer (Flutter Focus)",
     institution: "AppAkademie Berlin",
     period: "11.2025 - Heute",
-    status: "In Ausbildung / Aktuell"
+    status_de: "In Ausbildung / Aktuell",
+    status_en: "Current Training",
+    isQual: true
   },
   {
-    degree: "Computer Application Technology",
+    degree_de: "Computer Application Technology",
+    degree_en: "Computer Application Technology",
     institution: "Lanzhou Jiaotong University",
     period: "2015 - 2019"
   },
   {
-    degree: "Information Technology Design",
-    institution: "Kremenchuts'kyy Universytet Ekonomiky, Informatsiynykh Tekhnolohiy IUpravlinnya",
+    degree_de: "Information Technology Design",
+    degree_en: "Information Technology Design",
+    institution: "Kremenchuts'kyy Universytet Ekonomiky",
     period: "2004 - 2010"
   }
 ];
 
-const LANGUAGES = [
-  { lang: "Deutsch", level: "B2 (Zertifiziert 2025)" },
-  { lang: "Englisch", level: "B2+ (Obere Mittelstufe)" },
-  { lang: "Ukrainisch", level: "Muttersprache" },
-  { lang: "Russisch", level: "Muttersprache" },
-  { lang: "Chinesisch", level: "Mittelstufe" }
-];
+const LANGUAGES = {
+  de: [
+    { lang: "Deutsch", level: "B2 (Zertifiziert 2025)" },
+    { lang: "Englisch", level: "B2+ (Obere Mittelstufe)" },
+    { lang: "Ukrainisch", level: "Muttersprache" },
+    { lang: "Russisch", level: "Muttersprache" },
+    { lang: "Chinesisch", level: "Mittelstufe" }
+  ],
+  en: [
+    { lang: "German", level: "B2 (Certified 2025)" },
+    { lang: "English", level: "B2+ (Upper Intermediate)" },
+    { lang: "Ukrainian", level: "Native" },
+    { lang: "Russian", level: "Native" },
+    { lang: "Chinese", level: "Intermediate" }
+  ]
+};
 
 export default function App() {
+  const [lang, setLang] = useState<Language>('de');
   const [qrOpen, setQrOpen] = useState(false);
-  const currentUrl = https://kanzatuwka.github.io/my_cv/;
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : 'https://github.com/Kanzatuwka';
+  
+  const T = TRANSLATIONS[lang];
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -134,15 +248,29 @@ export default function App() {
           <span className="font-bold text-xl tracking-tight flex items-center gap-2">
             <span className="w-2 h-6 bg-blue-600"></span> O.P.
           </span>
-          <div className="flex gap-6 items-center uppercase tracking-widest text-[10px] font-bold">
-            <a href="#experience" className="hover:text-blue-600 transition-colors">Erfahrung</a>
-            <a href="#skills" className="hover:text-blue-600 transition-colors">Skills</a>
+          <div className="flex gap-4 md:gap-6 items-center uppercase tracking-widest text-[10px] font-bold">
+            <div className="flex border border-slate-200 rounded-sm overflow-hidden mr-2">
+              <button 
+                onClick={() => setLang('de')}
+                className={`px-2 py-1 transition-colors ${lang === 'de' ? 'bg-slate-900 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'}`}
+              >
+                DE
+              </button>
+              <button 
+                onClick={() => setLang('en')}
+                className={`px-2 py-1 transition-colors ${lang === 'en' ? 'bg-slate-900 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'}`}
+              >
+                EN
+              </button>
+            </div>
+            <a href="#experience" className="hidden sm:block hover:text-blue-600 transition-colors uppercase">{T.nav.experience}</a>
+            <a href="#skills" className="hidden sm:block hover:text-blue-600 transition-colors uppercase">{T.nav.skills}</a>
             <button 
               onClick={() => setQrOpen(true)}
-              className="flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-sm hover:bg-slate-800 transition-all active:scale-95 shadow-sm"
+              className="flex items-center gap-2 bg-slate-900 text-white px-3 py-1.5 rounded-sm hover:bg-slate-800 transition-all active:scale-95 shadow-sm"
             >
               <QrCode size={12} />
-              Share
+              {T.nav.share}
             </button>
           </div>
         </div>
@@ -151,6 +279,7 @@ export default function App() {
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-6 pt-32 pb-24">
         <motion.div 
+          key={lang} /* Force re-animation on lang change */
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -166,32 +295,32 @@ export default function App() {
                 ))}
               </h1>
               <p className="mt-4 text-blue-600 font-bold uppercase tracking-widest text-xs">
-                {PROFILE.title}
+                {T.profile.title}
               </p>
             </motion.div>
 
             {/* Contact Card */}
             <motion.div variants={itemVariants} className="bg-white p-6 border border-slate-200 space-y-4">
-              <h2 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Kontakt</h2>
+              <h2 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">{T.contact}</h2>
               <div className="text-sm space-y-3 font-medium">
-                <p className="flex items-center gap-3"><MapPin size={16} className="text-slate-400" /> {PROFILE.location}</p>
+                <p className="flex items-center gap-3"><MapPin size={16} className="text-slate-400" /> {T.profile.location}</p>
                 <a href={`mailto:${PROFILE.email}`} className="flex items-center gap-3 hover:text-blue-600 transition-colors">
                   <Mail size={16} className="text-slate-400" /> {PROFILE.email}
                 </a>
-                <a href={PROFILE.linkedin} target="_blank" rel="noreferrer" className="flex items-center gap-3 text-blue-600 underline">
-                  <Linkedin size={16} /> LinkedIn
+                <a href={PROFILE.linkedin} target="_blank" rel="noreferrer" className="flex items-center gap-3 text-blue-600 underline text-xs break-all">
+                  <Linkedin size={16} className="flex-shrink-0" /> {PROFILE.linkedin.replace('https://', '')}
                 </a>
-                <a href={PROFILE.github} target="_blank" rel="noreferrer" className="flex items-center gap-3 text-blue-600 underline">
-                  <Github size={16} /> GitHub
+                <a href={PROFILE.github} target="_blank" rel="noreferrer" className="flex items-center gap-3 text-blue-600 underline text-xs break-all">
+                  <Github size={16} className="flex-shrink-0" /> {PROFILE.github.replace('https://', '')}
                 </a>
               </div>
             </motion.div>
 
             {/* Languages Card */}
             <motion.div variants={itemVariants} className="bg-white p-6 border border-slate-200">
-              <h2 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Sprachkenntnisse</h2>
+              <h2 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">{T.languages}</h2>
               <div className="space-y-3">
-                {LANGUAGES.map(l => (
+                {LANGUAGES[lang].map(l => (
                   <div key={l.lang} className="flex justify-between items-center text-sm">
                     <span className="font-semibold">{l.lang}</span>
                     <span className="text-slate-500 italic text-xs">{l.level}</span>
@@ -204,10 +333,10 @@ export default function App() {
             <motion.div 
               variants={itemVariants} 
               className="bg-slate-900 text-white p-6 rounded-sm flex items-center justify-between cursor-pointer group hover:bg-slate-800 transition-colors"
-              onClick={() => setQrOpen(true)}
-            >
+                onClick={() => setQrOpen(true)}
+              >
               <div>
-                <p className="text-[9px] uppercase tracking-widest opacity-60 mb-1">Portfolio scannen</p>
+                <p className="text-[9px] uppercase tracking-widest opacity-60 mb-1">{T.scan.title}</p>
                 <p className="text-[10px] font-mono break-all">{PROFILE.github.replace('https://', '')}</p>
               </div>
               <div className="w-14 h-14 bg-white p-0.5 rounded-sm overflow-hidden group-hover:scale-110 transition-transform">
@@ -223,28 +352,30 @@ export default function App() {
               {/* Profile Intro Section */}
               <section className="mb-10">
                 <h2 className="text-lg font-bold border-b-2 border-slate-100 pb-2 mb-6 flex items-center gap-2">
-                  <span className="w-2 h-6 bg-blue-600"></span> Profil & Ziele
+                  <span className="w-2 h-6 bg-blue-600"></span> {T.sections.intro}
                 </h2>
                 <p className="text-slate-600 font-medium italic leading-relaxed text-sm">
-                  "{PROFILE.description}"
+                  "{T.profile.description}"
                 </p>
               </section>
 
               {/* Training Section */}
               <section className="mb-10">
                 <h2 className="text-lg font-bold border-b-2 border-slate-100 pb-2 mb-6 flex items-center gap-2">
-                  <span className="w-2 h-6 bg-blue-600"></span> Aktuelle Qualifikation
+                  <span className="w-2 h-6 bg-blue-600"></span> {T.sections.qualification}
                 </h2>
                 <div className="relative pl-8 border-l border-slate-200">
                   <div className="absolute -left-[5px] top-0 w-[9px] h-[9px] rounded-full bg-blue-600"></div>
-                  <div className="mb-1 text-xs font-bold text-blue-600 uppercase tracking-widest">11.2025 — Heute</div>
-                  <h3 className="text-xl font-black italic">AI Software Developer (Flutter Fokus)</h3>
-                  <p className="text-slate-600 font-medium italic mb-2">AppAkademie Berlin</p>
+                  <div className="mb-1 text-xs font-bold text-blue-600 uppercase tracking-widest">11.2025 — {lang === 'de' ? 'Heute' : 'Present'}</div>
+                  <h3 className="text-xl font-black italic">{lang === 'de' ? EDUCATION_BASE[0].degree_de : EDUCATION_BASE[0].degree_en}</h3>
+                  <p className="text-slate-600 font-medium italic mb-2">{EDUCATION_BASE[0].institution}</p>
                   <ul className="text-sm text-slate-600 space-y-1.5 list-none ml-0">
-                    <li className="flex items-center gap-2"><CheckCircle size={12} className="text-blue-500" /> Softwareentwicklung mit KI-Basis & Tools</li>
-                    <li className="flex items-center gap-2"><CheckCircle size={12} className="text-blue-500" /> Integration von GitHub Copilot & ChatGPT in den Workflow</li>
-                    <li className="flex items-center gap-2"><CheckCircle size={12} className="text-blue-500" /> State Management & Clean Architecture (AI-optimiert)</li>
-                    <li className="flex items-center gap-2"><CheckCircle size={12} className="text-blue-500" /> Mobile Development mit Flutter & AI-Unterstützung</li>
+                    {T.qual_items.map((item, i) => (
+                      <li key={i} className="flex items-center gap-2">
+                        <CheckCircle size={12} className="text-blue-500 flex-shrink-0" /> 
+                        {item}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </section>
@@ -252,11 +383,11 @@ export default function App() {
               {/* Tech Stack Section */}
               <section id="skills" className="mb-10">
                 <h2 className="text-lg font-bold border-b-2 border-slate-100 pb-2 mb-6 flex items-center gap-2">
-                  <span className="w-2 h-6 bg-blue-600"></span> Technisches Profil
+                  <span className="w-2 h-6 bg-blue-600"></span> {T.sections.techProfile}
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-6">
                   <div>
-                    <h5 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Core Development</h5>
+                    <h5 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">{T.skill_headers.core}</h5>
                     <div className="flex flex-wrap gap-2">
                       {SKILLS.core.map(s => (
                         <span key={s} className="px-2 py-1 bg-slate-100 text-slate-700 text-[10px] font-mono border border-slate-200 uppercase">{s}</span>
@@ -264,7 +395,7 @@ export default function App() {
                     </div>
                   </div>
                   <div>
-                    <h5 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Mobile & Infrastructure</h5>
+                    <h5 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">{T.skill_headers.mobile}</h5>
                     <div className="flex flex-wrap gap-2">
                       {SKILLS.tech.map(s => (
                         <span key={s} className="px-2 py-1 bg-slate-100 text-slate-700 text-[10px] font-mono border border-slate-200 uppercase">{s}</span>
@@ -272,7 +403,7 @@ export default function App() {
                     </div>
                   </div>
                   <div className="sm:col-span-2">
-                    <h5 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Expertise & Soft Skills</h5>
+                    <h5 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">{T.skill_headers.soft}</h5>
                     <div className="flex flex-wrap gap-2">
                       {SKILLS.soft.map(s => (
                         <span key={s} className="px-2 py-1 bg-blue-50 text-blue-700 text-[10px] font-bold border border-blue-100 uppercase">{s}</span>
@@ -285,21 +416,23 @@ export default function App() {
               {/* Experience Timeline */}
               <section id="experience" className="mb-10">
                 <h2 className="text-lg font-bold border-b-2 border-slate-100 pb-2 mb-6 flex items-center gap-2">
-                  <span className="w-2 h-6 bg-blue-600"></span> Berufserfahrung
+                  <span className="w-2 h-6 bg-blue-600"></span> {T.sections.experience}
                 </h2>
                 <div className="space-y-8">
-                  {EXPERIENCE.map((exp, idx) => (
+                  {EXPERIENCE_BASE.map((exp, idx) => (
                     <div key={idx} className="relative pl-8 border-l border-slate-100">
                       <div className="absolute -left-[4px] top-0 w-2 h-2 rounded-full bg-slate-300"></div>
                       <div className="mb-1 text-[10px] font-bold text-slate-400 uppercase tracking-widest">{exp.period}</div>
-                      <h4 className="text-lg font-bold leading-tight">{exp.role}</h4>
+                      <h4 className="text-lg font-bold leading-tight italic">
+                        {lang === 'de' ? (exp.role_de || "Techniker im Testing") : (exp.role_en || "Testing Technician")}
+                      </h4>
                       <p className="text-sm font-medium text-blue-600 mb-3">{exp.company}, {exp.location}</p>
-                      {exp.items && (
+                      {exp.item_key && (
                         <ul className="text-xs text-slate-500 space-y-1 ml-4 list-disc">
-                          {exp.items.map((item, i) => <li key={i}>{item}</li>)}
+                          {(T.exp_details as any)[exp.item_key].map((item: string, i: number) => <li key={i}>{item}</li>)}
                         </ul>
                       )}
-                      {exp.description && <p className="text-xs text-slate-500 italic mt-2">{exp.description}</p>}
+                      {exp.key && <p className="text-xs text-slate-500 italic mt-2">{(T.exp_details as any)[exp.key]}</p>}
                     </div>
                   ))}
                 </div>
@@ -308,13 +441,15 @@ export default function App() {
               {/* Education Sub-timeline */}
               <section className="mb-10">
                 <h2 className="text-lg font-bold border-b-2 border-slate-100 pb-2 mb-6 flex items-center gap-2">
-                  <span className="w-2 h-6 bg-blue-600"></span> Akademische Ausbildung
+                  <span className="w-2 h-6 bg-blue-600"></span> {T.sections.education}
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {EDUCATION.filter(e => !e.degree.includes('Kurs')).map((edu, idx) => (
+                  {EDUCATION_BASE.filter(e => !e.isQual).map((edu, idx) => (
                     <div key={idx} className="space-y-1">
                       <p className="text-[10px] font-bold text-slate-400 uppercase">{edu.period}</p>
-                      <h4 className="font-bold text-sm leading-tight">{edu.degree}</h4>
+                      <h4 className="font-bold text-sm leading-tight italic">
+                        {lang === 'de' ? edu.degree_de : edu.degree_en}
+                      </h4>
                       <p className="text-[10px] text-slate-500 italic leading-snug">{edu.institution}</p>
                     </div>
                   ))}
@@ -322,7 +457,7 @@ export default function App() {
               </section>
 
               <div className="mt-auto pt-6 border-t border-slate-100 text-[10px] text-slate-400 text-center">
-                <p>Digitale Version verfügbar auf <strong>kanzatuwka.github.io</strong> &bull; Aktualisiert: April 2026</p>
+                <p>{T.footer.replace('{url}', 'kanzatuwka.github.io')}</p>
               </div>
             </div>
           </div>
@@ -347,8 +482,8 @@ export default function App() {
               onClick={e => e.stopPropagation()}
             >
               <div className="space-y-2">
-                <h4 className="font-display font-bold text-xl">Digitales Profil</h4>
-                <p className="text-sm text-zinc-500 leading-snug">Scannen Sie diesen Code, um mein Profil mobil zu öffnen.</p>
+                <h4 className="font-display font-bold text-xl">{T.scan.modalTitle}</h4>
+                <p className="text-sm text-zinc-500 leading-snug">{T.scan.modalDesc}</p>
               </div>
               <div className="bg-zinc-50 p-6 rounded-2xl flex justify-center shadow-inner">
                 <QRCodeSVG 
@@ -362,7 +497,7 @@ export default function App() {
                 onClick={() => setQrOpen(false)}
                 className="w-full py-4 bg-zinc-900 text-white rounded-2xl font-bold hover:bg-zinc-800 transition-colors"
               >
-                Schließen
+                {T.scan.close}
               </button>
             </motion.div>
           </motion.div>
