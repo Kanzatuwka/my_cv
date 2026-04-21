@@ -133,7 +133,6 @@ const TRANSLATIONS = {
 
 const PROFILE = {
   name: "Oleksandr Prykhodko",
-  phone: "+49 17647088838",
   email: "olexandr.prykhodko@gmail.com",
   github: "https://github.com/Kanzatuwka",
   linkedin: "https://www.linkedin.com/in/oleksandr-prykhodko-542158143",
