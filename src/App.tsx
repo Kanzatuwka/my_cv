@@ -229,7 +229,7 @@ const LANGUAGES = {
 export default function App() {
   const [lang, setLang] = useState<Language>('de');
   const [qrOpen, setQrOpen] = useState(false);
-  const currentUrl = 'https://kanzatuwka.github.io/my_cv/';
+  const currentUrl = "https://kanzatuwka.github.io/my_cv/";
   
   const T = TRANSLATIONS[lang];
 
