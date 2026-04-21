@@ -38,7 +38,7 @@ const TRANSLATIONS = {
       qualification: "Aktuelle Qualifikation",
       techProfile: "Technisches Profil",
       experience: "Berufserfahrung",
-      education: "Akademie Ausbildung"
+      education: "Akademische Ausbildung"
     },
     contact: "Kontakt",
     languages: "Sprachkenntnisse",
@@ -148,13 +148,17 @@ const SKILLS = {
 const EXPERIENCE_BASE = [
   {
     company: "Momenta",
-    location: "Germany",
+    location_de: "Deutschland",
+    location_en: "Germany",
     period: "2023",
+    role_de: "Techniker im Testing",
+    role_en: "Testing Technician",
     key: "momenta"
   },
   {
     company: "Thundersoft",
-    location: "Sweden, Thailand, UAE, Greece, Italy, France",
+    location_de: "Schweden, Thailand, VAE, Griechenland, Italien, Frankreich",
+    location_en: "Sweden, Thailand, UAE, Greece, Italy, France",
     period: "2021 - 2023",
     role_de: "Teamleiter / Field Test Engineer",
     role_en: "Team Lead / Field Test Engineer",
@@ -162,7 +166,8 @@ const EXPERIENCE_BASE = [
   },
   {
     company: "Thundersoft",
-    location: "Ukraine, Romania, Sweden, Thailand, UAE, Italy, Belarus",
+    location_de: "Ukraine, Rumänien, Schweden, Thailand, VAE, Italien, Belarus",
+    location_en: "Ukraine, Romania, Sweden, Thailand, UAE, Italy, Belarus",
     period: "2020 - 2021",
     role_de: "Field Test Engineer",
     role_en: "Field Test Engineer",
@@ -170,9 +175,10 @@ const EXPERIENCE_BASE = [
   },
   {
     company: "PJSC BTA BANK",
-    location: "Ukraine",
+    location_de: "Ukraine",
+    location_en: "Ukraine",
     period: "2011 - 2015",
-    role_de: "Chief Specialist (Automated Banking Systems)",
+    role_de: "Hauptspezialist (Automatisierte Bankensysteme)",
     role_en: "Chief Specialist (Automated Banking Systems)",
     key: "bts"
   }
@@ -184,18 +190,19 @@ const EDUCATION_BASE = [
     degree_en: "AI Software Developer (Flutter Focus)",
     institution: "AppAkademie Berlin",
     period: "11.2025 - Heute",
+    period_en: "11.2025 - Present",
     status_de: "In Ausbildung / Aktuell",
     status_en: "Current Training",
     isQual: true
   },
   {
-    degree_de: "Computer Application Technology",
+    degree_de: "Computer-Anwendungstechnologie",
     degree_en: "Computer Application Technology",
     institution: "Lanzhou Jiaotong University",
     period: "2015 - 2019"
   },
   {
-    degree_de: "Information Technology Design",
+    degree_de: "Informationstechnologie-Design",
     degree_en: "Information Technology Design",
     institution: "Kremenchuts'kyy Universytet Ekonomiky",
     period: "2004 - 2010"
@@ -222,7 +229,7 @@ const LANGUAGES = {
 export default function App() {
   const [lang, setLang] = useState<Language>('de');
   const [qrOpen, setQrOpen] = useState(false);
-  const currentUrl = typeof window !== 'undefined' ? window.location.href : 'https://github.com/Kanzatuwka';
+  const currentUrl = 'https://kanzatuwka.github.io/my_cv/';
   
   const T = TRANSLATIONS[lang];
 
@@ -306,11 +313,11 @@ export default function App() {
                 <a href={`mailto:${PROFILE.email}`} className="flex items-center gap-3 hover:text-blue-600 transition-colors">
                   <Mail size={16} className="text-slate-400" /> {PROFILE.email}
                 </a>
-                <a href={PROFILE.linkedin} target="_blank" rel="noreferrer" className="flex items-center gap-3 text-blue-600 underline text-xs break-all">
-                  <Linkedin size={16} className="flex-shrink-0" /> {PROFILE.linkedin.replace('https://', '')}
+                <a href={PROFILE.linkedin} target="_blank" rel="noreferrer" className="flex items-center gap-3 text-blue-600 underline">
+                  <Linkedin size={16} className="flex-shrink-0" /> LinkedIn
                 </a>
-                <a href={PROFILE.github} target="_blank" rel="noreferrer" className="flex items-center gap-3 text-blue-600 underline text-xs break-all">
-                  <Github size={16} className="flex-shrink-0" /> {PROFILE.github.replace('https://', '')}
+                <a href={PROFILE.github} target="_blank" rel="noreferrer" className="flex items-center gap-3 text-blue-600 underline">
+                  <Github size={16} className="flex-shrink-0" /> GitHub
                 </a>
               </div>
             </motion.div>
@@ -353,7 +360,7 @@ export default function App() {
                 <h2 className="text-lg font-bold border-b-2 border-slate-100 pb-2 mb-6 flex items-center gap-2">
                   <span className="w-2 h-6 bg-blue-600"></span> {T.sections.intro}
                 </h2>
-                <p className="text-slate-600 font-medium italic leading-relaxed text-sm">
+                <p className="text-slate-600 font-medium italic leading-relaxed text-sm text-justify">
                   "{T.profile.description}"
                 </p>
               </section>
@@ -365,7 +372,7 @@ export default function App() {
                 </h2>
                 <div className="relative pl-8 border-l border-slate-200">
                   <div className="absolute -left-[5px] top-0 w-[9px] h-[9px] rounded-full bg-blue-600"></div>
-                  <div className="mb-1 text-xs font-bold text-blue-600 uppercase tracking-widest">11.2025 — {lang === 'de' ? 'Heute' : 'Present'}</div>
+                  <div className="mb-1 text-xs font-bold text-blue-600 uppercase tracking-widest">{lang === 'de' ? EDUCATION_BASE[0].period : EDUCATION_BASE[0].period_en}</div>
                   <h3 className="text-xl font-black italic">{lang === 'de' ? EDUCATION_BASE[0].degree_de : EDUCATION_BASE[0].degree_en}</h3>
                   <p className="text-slate-600 font-medium italic mb-2">{EDUCATION_BASE[0].institution}</p>
                   <ul className="text-sm text-slate-600 space-y-1.5 list-none ml-0">
@@ -423,15 +430,15 @@ export default function App() {
                       <div className="absolute -left-[4px] top-0 w-2 h-2 rounded-full bg-slate-300"></div>
                       <div className="mb-1 text-[10px] font-bold text-slate-400 uppercase tracking-widest">{exp.period}</div>
                       <h4 className="text-lg font-bold leading-tight italic">
-                        {lang === 'de' ? (exp.role_de || "Techniker im Testing") : (exp.role_en || "Testing Technician")}
+                        {lang === 'de' ? (exp.role_de) : (exp.role_en)}
                       </h4>
-                      <p className="text-sm font-medium text-blue-600 mb-3">{exp.company}, {exp.location}</p>
+                      <p className="text-sm font-medium text-blue-600 mb-3">{exp.company}, {lang === 'de' ? exp.location_de : exp.location_en}</p>
                       {exp.item_key && (
                         <ul className="text-xs text-slate-500 space-y-1 ml-4 list-disc">
                           {(T.exp_details as any)[exp.item_key].map((item: string, i: number) => <li key={i}>{item}</li>)}
                         </ul>
                       )}
-                      {exp.key && <p className="text-xs text-slate-500 italic mt-2">{(T.exp_details as any)[exp.key]}</p>}
+                      {exp.key && <p className="text-xs text-slate-500 italic mt-2 text-justify">{(T.exp_details as any)[exp.key]}</p>}
                     </div>
                   ))}
                 </div>
