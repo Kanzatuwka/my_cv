@@ -229,7 +229,7 @@ const LANGUAGES = {
 export default function App() {
   const [lang, setLang] = useState<Language>('de');
   const [qrOpen, setQrOpen] = useState(false);
-  const currentUrl = "https://kanzatuwka.github.io/my_cv/";
+  const currentUrl = 'https://kanzatuwka.github.io/my_cv/';
   
   const T = TRANSLATIONS[lang];
 
@@ -339,7 +339,8 @@ export default function App() {
             <motion.div 
               variants={itemVariants} 
               className="bg-slate-900 text-white p-6 rounded-sm flex items-center justify-between cursor-pointer group hover:bg-slate-800 transition-colors"
-                onClick={() => setQrOpen(true)}>
+                onClick={() => setQrOpen(true)}
+              >
               <div>
                 <p className="text-[9px] uppercase tracking-widest opacity-60 mb-1">{T.scan.title}</p>
                 <p className="text-[10px] font-mono break-all">{PROFILE.github.replace('https://', '')}</p>
