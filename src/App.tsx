@@ -111,7 +111,7 @@ const LANGUAGES = [
 
 export default function App() {
   const [qrOpen, setQrOpen] = useState(false);
-  const currentUrl = typeof window !== 'undefined' ? window.location.href : 'https://github.com/Kanzatuwka';
+  const currentUrl = https://kanzatuwka.github.io/my_cv/;
 
   const containerVariants = {
     hidden: { opacity: 0 },
