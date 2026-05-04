@@ -212,14 +212,14 @@ const EDUCATION_BASE = [
 const LANGUAGES = {
   de: [
     { lang: "Deutsch", level: "B2 (Zertifiziert 2025)" },
-    { lang: "Englisch", level: "B2+ (Obere Mittelstufe)" },
+    { lang: "Englisch", level: "B2 (Obere Mittelstufe)" },
     { lang: "Ukrainisch", level: "Muttersprache" },
     { lang: "Russisch", level: "Muttersprache" },
     { lang: "Chinesisch", level: "Mittelstufe" }
   ],
   en: [
     { lang: "German", level: "B2 (Certified 2025)" },
-    { lang: "English", level: "B2+ (Upper Intermediate)" },
+    { lang: "English", level: "B2 (Upper Intermediate)" },
     { lang: "Ukrainian", level: "Native" },
     { lang: "Russian", level: "Native" },
     { lang: "Chinese", level: "Intermediate" }
