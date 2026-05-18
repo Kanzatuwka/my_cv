@@ -11,3 +11,50 @@
     @apply bg-zinc-50 text-zinc-900 selection:bg-zinc-900 selection:text-white antialiased;
   }
 }
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background-color: white !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  main {
+    padding-top: 2rem !important;
+  }
+
+  /* Reset layout for single page or clean PDF flow */
+  .grid {
+    display: block !important;
+  }
+
+  .md\:col-span-4, .md\:col-span-8 {
+    width: 100% !important;
+    margin-bottom: 2rem;
+  }
+
+  /* Keep sidebar-like feel by floating or specific order if needed, 
+     but for standard CV usually top-down is safer for PDF */
+  
+  section {
+    page-break-inside: avoid;
+  }
+
+  a {
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+
+  /* Border and accent colors should be forced */
+  .border-blue-600 {
+    border-color: #2563eb !important;
+  }
+  
+  .bg-blue-600 {
+    background-color: #2563eb !important;
+  }
+}

@@ -14,7 +14,8 @@ import {
   Smartphone, 
   CheckCircle, 
   Globe, 
-  QrCode
+  QrCode,
+  Download
 } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 
@@ -41,6 +42,7 @@ const TRANSLATIONS = {
       education: "Akademische Ausbildung"
     },
     contact: "Kontakt",
+    download: "PDF Herunterladen",
     languages: "Sprachkenntnisse",
     scan: {
       title: "Portfolio scannen",
@@ -95,6 +97,7 @@ const TRANSLATIONS = {
       education: "Academic Education"
     },
     contact: "Contact",
+    download: "Download PDF",
     languages: "Language Skills",
     scan: {
       title: "Scan Portfolio",
@@ -233,6 +236,14 @@ export default function App() {
   
   const T = TRANSLATIONS[lang];
 
+  const handleDownload = (targetLang: Language) => {
+    setLang(targetLang);
+    // Wait for the state to update and UI to re-render
+    setTimeout(() => {
+      window.print();
+    }, 300);
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { 
@@ -249,7 +260,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-blue-600 selection:text-white antialiased">
       {/* Navigation (Sticky) */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 no-print">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <span className="font-bold text-xl tracking-tight flex items-center gap-2">
             <span className="w-2 h-6 bg-blue-600"></span> O.P.
@@ -305,6 +316,27 @@ export default function App() {
               </p>
             </motion.div>
 
+            {/* Download Card */}
+            <motion.div variants={itemVariants} className="bg-blue-600 text-white p-6 rounded-sm shadow-md no-print">
+              <h2 className="text-[10px] font-bold text-blue-100 uppercase tracking-widest mb-4 flex items-center gap-2">
+                <Download size={12} /> {T.download}
+              </h2>
+              <div className="grid grid-cols-2 gap-3">
+                <button 
+                  onClick={() => handleDownload('de')}
+                  className="bg-white text-blue-600 py-2 px-3 rounded text-xs font-bold hover:bg-blue-50 transition-colors flex items-center justify-center gap-2"
+                >
+                  DE
+                </button>
+                <button 
+                  onClick={() => handleDownload('en')}
+                  className={`bg-blue-700 text-white py-2 px-3 rounded text-xs font-bold hover:bg-blue-800 transition-colors flex items-center justify-center gap-2`}
+                >
+                  EN
+                </button>
+              </div>
+            </motion.div>
+
             {/* Contact Card */}
             <motion.div variants={itemVariants} className="bg-white p-6 border border-slate-200 space-y-4">
               <h2 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">{T.contact}</h2>
@@ -338,7 +370,7 @@ export default function App() {
             {/* Scan Card */}
             <motion.div 
               variants={itemVariants} 
-              className="bg-slate-900 text-white p-6 rounded-sm flex items-center justify-between cursor-pointer group hover:bg-slate-800 transition-colors"
+              className="bg-slate-900 text-white p-6 rounded-sm flex items-center justify-between cursor-pointer group hover:bg-slate-800 transition-colors no-print"
                 onClick={() => setQrOpen(true)}
               >
               <div>
