@@ -48,7 +48,7 @@ const TRANSLATIONS = {
       modalDesc: "Scannen Sie diesen Code, um mein Profil mobil zu öffnen.",
       close: "Schließen"
     },
-    footer: "Digitale Version verfügbar auf {url} • Aktualisiert: April 2026",
+    footer: "Digitale Version verfügbar auf {url} • Aktualisiert: Mai 2026",
     exp_details: {
       momenta: "Prüfung und Validierung hardware- und softwarebasierter Autopilot-Systeme für die Automobilindustrie.",
       bts: "Unterstützung und Wartung von automatisierten Bankensystemen.",
@@ -64,10 +64,10 @@ const TRANSLATIONS = {
       ]
     },
     qual_items: [
-      "Softwareentwicklung mit KI-Basis & Tools",
-      "Integration von GitHub Copilot & ChatGPT in den Workflow",
-      "State Management & Clean Architecture (AI-optimiert)",
-      "Mobile Development mit Flutter & AI-Unterstützung"
+      "Softwareentwicklung mit Dart (OOP, Null Safety, Async)",
+      "Mobile App-Entwicklung mit Flutter (Layouts, State Mgmt, APIs)",
+      "AI Assisted Development (KI-Assistenz, Context Engineering)",
+      "Testen, Debugging und Deployment (iOS & Android)"
     ],
     skill_headers: {
       core: "Programmierung",
@@ -102,7 +102,7 @@ const TRANSLATIONS = {
       modalDesc: "Scan this code to open my profile on your mobile device.",
       close: "Close"
     },
-    footer: "Digital version available at {url} • Updated: April 2026",
+    footer: "Digital version available at {url} • Updated: May 2026",
     exp_details: {
       momenta: "Testing and validation of hardware and software-based autopilot systems for the automotive industry.",
       bts: "Support and maintenance of automated banking systems.",
@@ -118,10 +118,10 @@ const TRANSLATIONS = {
       ]
     },
     qual_items: [
-      "Software development with AI base & tools",
-      "Integration of GitHub Copilot & ChatGPT into the workflow",
-      "State Management & Clean Architecture (AI-optimized)",
-      "Mobile development with Flutter & AI support"
+      "Software Development with Dart (OOP, Null Safety, Async)",
+      "Mobile App Development with Flutter (Layouts, State Mgmt, APIs)",
+      "AI Assisted Development (AI Assistants, Context Engineering)",
+      "Testing, Debugging and Deployment (iOS & Android)"
     ],
     skill_headers: {
       core: "Programming",
@@ -186,13 +186,13 @@ const EXPERIENCE_BASE = [
 
 const EDUCATION_BASE = [
   {
-    degree_de: "AI Software Developer (Flutter Fokus)",
-    degree_en: "AI Software Developer (Flutter Focus)",
+    degree_de: "App Entwickler (Moderne Anwendungsentwicklung)",
+    degree_en: "App Developer (Modern Application Development)",
     institution: "AppAkademie Berlin",
-    period: "11.2025 - Heute",
-    period_en: "11.2025 - Present",
-    status_de: "In Ausbildung / Aktuell",
-    status_en: "Current Training",
+    period: "11.2025 - 05.2026",
+    period_en: "11.2025 - 05.2026",
+    status_de: "Abgeschlossen",
+    status_en: "Completed",
     isQual: true
   },
   {
@@ -212,14 +212,14 @@ const EDUCATION_BASE = [
 const LANGUAGES = {
   de: [
     { lang: "Deutsch", level: "B2 (Zertifiziert 2025)" },
-    { lang: "Englisch", level: "B2 (Obere Mittelstufe)" },
+    { lang: "Englisch", level: "B2+ (Obere Mittelstufe)" },
     { lang: "Ukrainisch", level: "Muttersprache" },
     { lang: "Russisch", level: "Muttersprache" },
     { lang: "Chinesisch", level: "Mittelstufe" }
   ],
   en: [
     { lang: "German", level: "B2 (Certified 2025)" },
-    { lang: "English", level: "B2 (Upper Intermediate)" },
+    { lang: "English", level: "B2+ (Upper Intermediate)" },
     { lang: "Ukrainian", level: "Native" },
     { lang: "Russian", level: "Native" },
     { lang: "Chinese", level: "Intermediate" }
