@@ -15,15 +15,22 @@ import {
   LANGUAGES_DATA 
 } from '../constants';
 
-// Register fonts if needed, but standard ones are safe
-// react-pdf has default fonts like Helvetica, Times-Roman
+// Register fonts to embed them in the PDF. This naturally increases the file size to at least 40-50KB (overcoming the 8KB limit of Stepstone) and provides a highly polished typography layout.
+Font.register({
+  family: 'Inter',
+  fonts: [
+    { src: 'https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-400-normal.ttf', fontWeight: 400 },
+    { src: 'https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-700-normal.ttf', fontWeight: 700 },
+    { src: 'https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-400-italic.ttf', fontWeight: 400, fontStyle: 'italic' }
+  ]
+});
 
 const styles = StyleSheet.create({
   page: {
     padding: 40,
     fontSize: 10,
     color: '#1e293b', // slate-800
-    fontFamily: 'Helvetica',
+    fontFamily: 'Inter',
   },
   header: {
     marginBottom: 20,
