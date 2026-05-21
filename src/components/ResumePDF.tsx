@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet, Font } from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet, Font, Link } from '@react-pdf/renderer';
 import { 
   Language, 
   TRANSLATIONS, 
@@ -71,6 +71,12 @@ const styles = StyleSheet.create({
   contactItem: {
     fontSize: 9,
     marginBottom: 2,
+  },
+  contactLink: {
+    fontSize: 9,
+    marginBottom: 2,
+    color: '#2563eb', // blue-600
+    textDecoration: 'underline',
   },
   description: {
     fontSize: 9,
@@ -170,9 +176,15 @@ export const ResumePDF = ({ lang }: ResumePDFProps) => {
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>{T.contact}</Text>
               <Text style={styles.contactItem}>{T.profile.location}</Text>
-              <Text style={styles.contactItem}>{PROFILE.email}</Text>
-              <Text style={styles.contactItem}>LinkedIn</Text>
-              <Text style={styles.contactItem}>GitHub</Text>
+              <Link style={styles.contactLink} src={`mailto:${PROFILE.email}`}>
+                {PROFILE.email}
+              </Link>
+              <Link style={styles.contactLink} src={PROFILE.linkedin}>
+                LinkedIn
+              </Link>
+              <Link style={styles.contactLink} src={PROFILE.github}>
+                GitHub
+              </Link>
             </View>
 
             {/* Languages */}
