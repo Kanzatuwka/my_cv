@@ -213,6 +213,11 @@ export default function App() {
                   <div className="mb-1 text-xs font-bold text-blue-600 uppercase tracking-widest">{lang === 'de' ? EDUCATION_BASE[0].period : EDUCATION_BASE[0].period_en}</div>
                   <h3 className="text-xl font-black italic">{lang === 'de' ? EDUCATION_BASE[0].degree_de : EDUCATION_BASE[0].degree_en}</h3>
                   <p className="text-slate-600 font-medium italic mb-2">{EDUCATION_BASE[0].institution}</p>
+                  {T.qual_desc && (
+                    <p className="text-sm text-slate-600 mb-4 leading-relaxed text-justify italic font-medium">
+                      "{T.qual_desc}"
+                    </p>
+                  )}
                   <ul className="text-sm text-slate-600 space-y-1.5 list-none ml-0">
                     {T.qual_items.map((item, i) => (
                       <li key={i} className="flex items-center gap-2">
