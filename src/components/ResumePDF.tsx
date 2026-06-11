@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet, Font, Link } from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet, Font, Link, Image } from '@react-pdf/renderer';
 import { 
   Language, 
   TRANSLATIONS, 
@@ -14,6 +14,7 @@ import {
   EDUCATION_BASE, 
   LANGUAGES_DATA 
 } from '../constants';
+import profilePhoto from '../assets/images/profile.png';
 
 // Register fonts to embed them in the PDF. This naturally increases the file size to at least 40-50KB (overcoming the 8KB limit of Stepstone) and provides a highly polished typography layout.
 Font.register({
@@ -36,11 +37,18 @@ const styles = StyleSheet.create({
     lineHeight: 1.45,
   },
   header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 16,
-    textAlign: 'center',
     borderBottomWidth: 1.5,
     borderBottomColor: '#0f172a', // deep navy accent
     paddingBottom: 10,
+  },
+  headerTextContainer: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    flex: 1,
   },
   name: {
     fontSize: 20,
@@ -48,12 +56,11 @@ const styles = StyleSheet.create({
     color: '#0f172a',
     textTransform: 'uppercase',
     letterSpacing: 0.5,
-    marginBottom: 6,
+    marginBottom: 4,
   },
   title: {
     fontSize: 11,
     color: '#2563eb', // blue-600
-    marginTop: 6,
     fontWeight: 'bold',
     textTransform: 'uppercase',
     letterSpacing: 1,
@@ -61,9 +68,9 @@ const styles = StyleSheet.create({
   contactContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     marginTop: 6,
-    gap: 8,
+    gap: 6,
     fontSize: 8.5,
     color: '#475569',
   },
@@ -76,6 +83,14 @@ const styles = StyleSheet.create({
   contactLink: {
     color: '#2563eb',
     textDecoration: 'none',
+  },
+  photo: {
+    width: 65,
+    height: 80,
+    borderRadius: 4,
+    borderWidth: 1.25,
+    borderColor: '#cbd5e1',
+    marginLeft: 15,
   },
   section: {
     marginBottom: 14,
@@ -182,27 +197,31 @@ export const ResumePDF = ({ lang }: ResumePDFProps) => {
       <Page size="A4" style={styles.page}>
         {/* ATS-Optimized Header */}
         <View style={styles.header}>
-          <Text style={styles.name}>{PROFILE.name}</Text>
-          <Text style={styles.title}>{T.profile.title}</Text>
-          
-          <View style={styles.contactContainer}>
-            <Text style={styles.contactItem}>{T.profile.location}</Text>
-            <Text style={styles.bulletDivider}>•</Text>
+          <View style={styles.headerTextContainer}>
+            <Text style={styles.name}>{PROFILE.name}</Text>
+            <Text style={styles.title}>{T.profile.title}</Text>
             
-            <Link style={styles.contactLink} src={`mailto:${PROFILE.email}`}>
-              <Text style={styles.contactItem}>{PROFILE.email}</Text>
-            </Link>
-            <Text style={styles.bulletDivider}>•</Text>
-            
-            <Link style={styles.contactLink} src={PROFILE.linkedin}>
-              <Text style={styles.contactItem}>{cleanUrl(PROFILE.linkedin)}</Text>
-            </Link>
-            <Text style={styles.bulletDivider}>•</Text>
-            
-            <Link style={styles.contactLink} src={PROFILE.github}>
-              <Text style={styles.contactItem}>{cleanUrl(PROFILE.github)}</Text>
-            </Link>
+            <View style={styles.contactContainer}>
+              <Text style={styles.contactItem}>{T.profile.location}</Text>
+              <Text style={styles.bulletDivider}>•</Text>
+              
+              <Link style={styles.contactLink} src={`mailto:${PROFILE.email}`}>
+                <Text style={styles.contactItem}>{PROFILE.email}</Text>
+              </Link>
+              <Text style={styles.bulletDivider}>•</Text>
+              
+              <Link style={styles.contactLink} src={PROFILE.linkedin}>
+                <Text style={styles.contactItem}>{cleanUrl(PROFILE.linkedin)}</Text>
+              </Link>
+              <Text style={styles.bulletDivider}>•</Text>
+              
+              <Link style={styles.contactLink} src={PROFILE.github}>
+                <Text style={styles.contactItem}>{cleanUrl(PROFILE.github)}</Text>
+              </Link>
+            </View>
           </View>
+
+          <Image style={styles.photo} src={profilePhoto} />
         </View>
 
         {/* Profile / Professional Summary */}

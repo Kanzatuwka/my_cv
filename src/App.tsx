@@ -29,6 +29,7 @@ import {
 } from './constants';
 import { ResumePDF } from './components/ResumePDF';
 import { PDFDownloadLink } from '@react-pdf/renderer';
+import profilePhoto from './assets/images/profile.png';
 
 export default function App() {
   const [lang, setLang] = useState<Language>('de');
@@ -106,15 +107,22 @@ export default function App() {
           {/* LEFT COLUMN */}
           <div className="md:col-span-4 space-y-6">
             {/* Header Card */}
-            <motion.div variants={itemVariants} className="bg-white p-8 border-l-4 border-blue-600 shadow-sm">
-              <h1 className="text-4xl font-black tracking-tight leading-none uppercase">
-                {PROFILE.name.split(' ').map((n, i) => (
-                  <React.Fragment key={i}>{n}<br/></React.Fragment>
-                ))}
-              </h1>
-              <p className="mt-4 text-blue-600 font-bold uppercase tracking-widest text-xs">
-                {T.profile.title}
-              </p>
+            <motion.div variants={itemVariants} className="bg-white border-l-4 border-blue-600 shadow-sm flex items-stretch justify-between min-w-0 overflow-hidden">
+              <div className="min-w-0 flex-1 text-left p-5 sm:p-6 pr-3 flex flex-col justify-center">
+                <h1 className="text-xl sm:text-2xl md:text-xl lg:text-2xl font-black tracking-tight leading-[1.1] uppercase text-slate-900 break-words">
+                  {PROFILE.name}
+                </h1>
+                <p className="mt-2 text-blue-600 font-bold uppercase tracking-wider text-[9px] sm:text-[10px] leading-tight">
+                  {T.profile.title}
+                </p>
+              </div>
+              <img 
+                src={profilePhoto} 
+                alt={PROFILE.name}
+                referrerPolicy="no-referrer"
+                className="w-24 sm:w-28 md:w-24 lg:w-28 object-cover flex-shrink-0 transition-all duration-300 hover:scale-[1.04]"
+                style={{ imageRendering: '-webkit-optimize-contrast' }}
+              />
             </motion.div>
 
             {/* Download Card */}
